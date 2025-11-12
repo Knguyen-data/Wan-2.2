@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Model Information - WAN 2.2 Animate Replace</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f8fafc;
+      color: #1e293b;
+      padding: 40px 20px;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: #0f172a;
+    }
+    .model-badge {
+      display: inline-block;
+      background: #6366f1;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      margin: 1rem 0;
+    }
+    .card {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      margin: 1.5rem 0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .card h2 {
+      margin-bottom: 1rem;
+      color: #1e293b;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+    th, td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    th {
+      background: #f1f5f9;
+      font-weight: 600;
+    }
+    code {
+      background: #f1f5f9;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+    }
+    pre {
+      background: #0f172a;
+      color: #10b981;
+      padding: 1.5rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 0.9rem;
+    }
+    .success { color: #10b981; font-weight: 600; }
+    .warning { color: #f59e0b; font-weight: 600; }
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      background: #6366f1;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      margin: 0.5rem 0.5rem 0.5rem 0;
+      transition: background 0.2s;
+    }
+    .btn:hover {
+      background: #4f46e5;
+    }
+    .highlight {
+      background: #dbeafe;
+      border-left: 4px solid #3b82f6;
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎬 WAN 2.2 Animate Replace</h1>
+    <div class="model-badge">wan-video/wan-2.2-animate-replace</div>
+    <p style="margin-top: 1rem; font-size: 1.1rem;">
+      Use Wan 2.2 Animate to replace a character in a video scene
+    </p>
+
+    <div class="card">
+      <h2>✅ What Changed</h2>
+      <ul style="list-style: none; padding: 0;">
+        <li style="padding: 0.5rem 0;">✅ <strong>Model Updated:</strong> Now using <code>wan-video/wan-2.2-animate-replace</code></li>
+        <li style="padding: 0.5rem 0;">✅ <strong>Seed Support:</strong> Added optional seed parameter for reproducible results</li>
+        <li style="padding: 0.5rem 0;">✅ <strong>Refert Num:</strong> Now properly limited to 1 or 5 (as per model spec)</li>
+        <li style="padding: 0.5rem 0;">✅ <strong>Parallel Processing:</strong> 10 chunks at once for 10x speed</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>📋 Model Parameters</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Parameter</th>
+            <th>Type</th>
+            <th>Required</th>
+            <th>Description</th>
+            <th>Default</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>video</code></td>
+            <td>string</td>
+            <td class="success">✓ Required</td>
+            <td>Input video containing the character to be replaced</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td><code>character_image</code></td>
+            <td>string</td>
+            <td class="success">✓ Required</td>
+            <td>New character image to replace the original character</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td><code>resolution</code></td>
+            <td>string</td>
+            <td>Optional</td>
+            <td>Resolution for processing (480/720/1080)</td>
+            <td>720</td>
+          </tr>
+          <tr>
+            <td><code>refert_num</code></td>
+            <td>integer</td>
+            <td>Optional</td>
+            <td>Number of reference frames (must be 1 or 5)</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td><code>frames_per_second</code></td>
+            <td>integer</td>
+            <td>Optional</td>
+            <td>Frames per second for output video</td>
+            <td>24</td>
+          </tr>
+          <tr>
+            <td><code>seed</code></td>
+            <td>integer</td>
+            <td>Optional</td>
+            <td>Random seed (leave blank for random)</td>
+            <td>random</td>
+          </tr>
+          <tr>
+            <td><code>go_fast</code></td>
+            <td>boolean</td>
+            <td>Optional</td>
+            <td>Go fast mode</td>
+            <td>true</td>
+          </tr>
+          <tr>
+            <td><code>merge_audio</code></td>
+            <td>boolean</td>
+            <td>Optional</td>
+            <td>Merge audio from input video into output</td>
+            <td>true</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>🔧 Example API Call</h2>
+      <pre>{
+  "model": "wan-video/wan-2.2-animate-replace",
+  "input": {
+    "video": "data:video/mp4;base64,...",
+    "character_image": "data:image/png;base64,...",
+    "resolution": "720",
+    "refert_num": 1,
+    "frames_per_second": 24,
+    "seed": 42,
+    "go_fast": true,
+    "merge_audio": true
+  }
+}</pre>
+    </div>
+
+    <div class="card">
+      <h2>💡 Tips for Best Results</h2>
+      <div class="highlight">
+        <strong>Refert Num:</strong>
+        <ul style="margin-top: 0.5rem;">
+          <li><strong>1 (faster):</strong> Quicker processing, good for testing</li>
+          <li><strong>5 (better quality):</strong> Higher quality, more reference frames</li>
+        </ul>
+      </div>
+      <div class="highlight">
+        <strong>Seed:</strong>
+        <ul style="margin-top: 0.5rem;">
+          <li>Use the same seed to get reproducible results</li>
+          <li>Leave blank for random variations each time</li>
+        </ul>
+      </div>
+      <div class="highlight">
+        <strong>Resolution:</strong>
+        <ul style="margin-top: 0.5rem;">
+          <li><strong>480p:</strong> Fastest, lower quality</li>
+          <li><strong>720p:</strong> Balanced (recommended)</li>
+          <li><strong>1080p:</strong> Highest quality, slower processing</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>⚡ Processing Speed</h2>
+      <p><strong>With Parallel Processing (10 chunks simultaneously):</strong></p>
+      <table style="margin-top: 1rem;">
+        <thead>
+          <tr>
+            <th>Video Length</th>
+            <th>Chunks</th>
+            <th>Estimated Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>15 seconds</td>
+            <td>1</td>
+            <td>~1-2 minutes</td>
+          </tr>
+          <tr>
+            <td>1 minute</td>
+            <td>4</td>
+            <td>~1-2 minutes</td>
+          </tr>
+          <tr>
+            <td>5 minutes</td>
+            <td>20</td>
+            <td>~4-6 minutes</td>
+          </tr>
+          <tr>
+            <td>13 minutes</td>
+            <td>52</td>
+            <td>~10-15 minutes</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="text-align: center; margin: 3rem 0;">
+      <a href="/" class="btn">🎬 Go to Main App</a>
+      <a href="/parallel-info.html" class="btn">⚡ Parallel Info</a>
+      <a href="/status.html" class="btn">📊 View Status</a>
+    </div>
+
+    <div style="text-align: center; margin-top: 2rem; padding: 2rem; background: white; border-radius: 12px;">
+      <p style="font-size: 1.2rem; font-weight: 600; color: #10b981;">
+        ✅ Server is running with the correct model!
+      </p>
+      <p style="margin-top: 0.5rem; color: #64748b;">
+        Model: wan-video/wan-2.2-animate-replace
+      </p>
+    </div>
+  </div>
+</body>
+</html>
+

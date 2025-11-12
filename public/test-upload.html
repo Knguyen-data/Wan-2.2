@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Quick Test - Server Logs</title>
+  <style>
+    body { font-family: monospace; padding: 20px; background: #1e1e1e; color: #00ff00; }
+    .test-btn { padding: 10px 20px; margin: 10px; cursor: pointer; background: #0066cc; color: white; border: none; }
+    .log { background: #000; padding: 20px; margin-top: 20px; border-radius: 5px; white-space: pre-wrap; }
+    .success { color: #00ff00; }
+    .error { color: #ff0000; }
+  </style>
+</head>
+<body>
+  <h1>🧪 Server Test Panel</h1>
+  <p>Click buttons to test each endpoint:</p>
+  
+  <button class="test-btn" onclick="testServer()">1. Test Server Connection</button>
+  <button class="test-btn" onclick="testImageUpload()">2. Test Image Upload</button>
+  <button class="test-btn" onclick="testVideoUpload()">3. Test Video Upload</button>
+  
+  <div id="log" class="log">Logs will appear here...</div>
+
+  <script>
+    const log = document.getElementById('log');
+    
+    function addLog(message, isError = false) {
+      const timestamp = new Date().toLocaleTimeString();
+      const className = isError ? 'error' : 'success';
+      log.innerHTML += `<span class="${className}">[${timestamp}] ${message}</span>\n`;
+      log.scrollTop = log.scrollHeight;
+    }
+
+    async function testServer() {
+      addLog('Testing server connection...');
+      try {
+        const response = await fetch('http://localhost:3000/');
+        if (response.ok) {
+          addLog('✅ Server is running!');
+        } else {
+          addLog(`❌ Server responded with status: ${response.status}`, true);
+        }
+      } catch (error) {
+        addLog(`❌ Cannot connect to server: ${error.message}`, true);
+      }
+    }
+
+    async function testImageUpload() {
+      addLog('Creating test image...');
+      
+      // Create a small test image (1x1 red pixel PNG)
+      const canvas = document.createElement('canvas');
+      canvas.width = 100;
+      canvas.height = 100;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = 'red';
+      ctx.fillRect(0, 0, 100, 100);
+      ctx.fillStyle = 'white';
+      ctx.font = '20px Arial';
+      ctx.fillText('TEST', 30, 55);
+      
+      canvas.toBlob(async (blob) => {
+        const formData = new FormData();
+        formData.append('characterImage', blob, 'test-image.png');
+        
+        addLog('Uploading test image...');
+        try {
+          const response = await fetch('http://localhost:3000/api/upload-character-image', {
+            method: 'POST',
+            body: formData
+          });
+          
+          const data = await response.json();
+          if (data.success) {
+            addLog(`✅ Image uploaded: ${data.filename}`);
+            addLog(`   Image path: ${data.imagePath}`);
+          } else {
+            addLog(`❌ Upload failed: ${data.error}`, true);
+          }
+        } catch (error) {
+          addLog(`❌ Upload error: ${error.message}`, true);
+        }
+      });
+    }
+
+    async function testVideoUpload() {
+      addLog('⚠️ Video upload requires an actual video file');
+      addLog('Please use the main application to test video upload');
+    }
+
+    // Auto-test server on load
+    window.onload = () => {
+      addLog('='.repeat(60));
+      addLog('🚀 WAN 2.2 Server Test Panel');
+      addLog('='.repeat(60));
+      testServer();
+    };
+  </script>
+</body>
+</html>
+
